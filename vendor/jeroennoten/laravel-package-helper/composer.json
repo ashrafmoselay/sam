@@ -1,0 +1,32 @@
+{
+    "name": "jeroennoten/laravel-package-helper",
+    "description": "Helpers for Laravel packages",
+    "keywords": ["laravel", "package", "helper"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jeroen Noten",
+            "email": "jeroennoten@me.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "JeroenNoten\\LaravelPackageHelper\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "classmap": [
+            "tests/TestCase.php",
+            "tests/TestServiceProvider.php"
+        ]
+    },
+    "require": {
+        "laravel/framework": "5.1.*|5.2.*|5.3.*|5.4.*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~5.0",
+        "orchestra/database": "3.1.*|3.2.*|3.3.*|3.4.*-dev",
+        "orchestra/testbench": "3.1.*|3.2.*|3.3.*|3.4.*-dev",
+        "mockery/mockery": "^0.9.5"
+    }
+}

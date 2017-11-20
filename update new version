@@ -1,0 +1,4 @@
+1- make migrte then add field type in category and set default = 1
+2- add to products table category2_id,price2,price3,observe
+3- add discount to purchase invoice and set default = 0
+4- add type to clients and set default = 1

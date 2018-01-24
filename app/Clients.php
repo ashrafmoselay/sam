@@ -34,9 +34,9 @@ class Clients extends Model
     }
 
     public function treasury(){
-        return $this->hasMany('\App\TreasuryMovement','client_id','id')->where('type','=', 1);
+        return $this->hasMany('\App\TreasuryMovement','client_id','id')->where('user_type','=', 1);
     }
     public function returns(){
-        return $this->hasMany('\App\OrdersReturns','client_id','id')->where('type','=', 1);
+        return $this->hasMany('\App\OrdersReturns','client_id','id');
     }
 }

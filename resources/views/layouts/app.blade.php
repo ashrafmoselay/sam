@@ -83,6 +83,9 @@
             }
 
         }
+        .input-group-addon,.form-control{
+            min-width: 60px;
+        }
     </style>
     <!-- Scripts -->
     <script>
@@ -238,7 +241,7 @@
                                     <li>
                                         <a href="{{ url('/role') }}">
                                         <i class="fa fa-key {{$active}}"></i>
-                                        صلاحيات
+                                        صلاحيات المستخدمين
                                         </a>
                                     </li>
                                 </ul>
@@ -324,7 +327,7 @@
                             <ul class="dropdown-menu" role="menu">
                         <li @if(Request::is('treasury')) class='active' @endif>
                         <a href="{{ url('/treasury') }}">
-                            <i class="fa fa-money" aria-hidden="true"></i>
+                            <i class="fa fa-building" aria-hidden="true"></i>
 
                         {{ trans('app.treasuryMovement') }}</a></li>
                         <li @if(Request::is('masrofat')) class='active' @endif>
@@ -332,6 +335,18 @@
                         <i class="fa fa-exchange" aria-hidden="true"></i>
 
                         {{ trans('app.Masrofat') }}</a></li>
+                                <li>
+                                    <a href="{{ url('/bank') }}">
+                                        <i class="fa fa-money" aria-hidden="true"></i>
+                                        الحسابات البنكية
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ url('/cheq') }}">
+                                        <i class="fa fa-credit-card" aria-hidden="true"></i>
+                                        الشيكات
+                                    </a>
+                                </li>
                         </ul>
                         
                          
@@ -469,11 +484,13 @@
                 $(this).hide();
                 $('.pagination').hide();
                 $('.hideonprint').hide();
+                $('.btn').hide();
                 $('.col-md-6.scroll').removeClass('scroll');
                 window.print();
                 $(this).show();
                 $('.pagination').show();
                 $('.hideonprint').show();
+                $('.btn').show();
             });
             $( document ).on( 'focus', ':input', function(){
                 $( this ).attr( 'autocomplete', 'off' );

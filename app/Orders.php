@@ -11,7 +11,7 @@ class Orders extends Model
     use Sortable;
     protected $table = 'orders'; 
     protected $fillable = [
-        'client_id','payment_type','is_paid','total','paid','due','created_at','discount','note','id','discount_type'
+        'client_id','payment_type','is_paid','total','paid','due','created_at','discount','note','id','discount_type','bank_id'
     ];
     public $sortable = [
                         'id',
@@ -69,7 +69,15 @@ class Orders extends Model
     //Defining An Accessor
     public function getPaymentTypeAttribute($value)
     {
-        return ($value==1)?trans('app.Cash Payment'):trans('app.Payment in installments');
+        $payment = '';
+        if($value==1){
+            $payment = trans('app.Cash Payment');
+        }elseif($value==2){
+            $payment = trans('app.Payment in installments');
+        }else{
+            $payment = 'فيزا';
+        }
+        return $payment;
     }
     public function getCreatedAtAttribute($value)
     { 

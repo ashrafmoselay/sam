@@ -23,9 +23,9 @@
                 <?php 
                     $today = date('Y-m-d');
                     
-                    $todayorder = DB::table('orders')->whereDate('created_at','>=',$today)->sum('paid');
+                    $todayorder = DB::table('orders')->whereDate('created_at','>=',$today)->where('payment_type','!=',3)->sum('paid');
                     
-                    $prevorder = DB::table('orders')->whereDate('created_at','<',date('Y-m-d'))->sum('paid');
+                    $prevorder = DB::table('orders')->whereDate('created_at','<',date('Y-m-d'))->where('payment_type','!=',3)->sum('paid');
                     
                     $todaypurchase = DB::table('purchase_invoice')->whereDate('created_at','>=',$today)->sum('paid');
                     
@@ -43,9 +43,9 @@
 
                     $clientinstallmentPaidprev = DB::table('client_payments')->whereDate('created_at','<',date('Y-m-d'))->sum('paid');
 
-                    $supllierpayment = DB::table('supplier_payments')->whereDate('created_at','>=',$today)->sum('paid');
+                    $supllierpayment = DB::table('supplier_payments')->whereDate('created_at','>=',$today)->where('payment_type',1)->sum('paid');
 
-                    $prevsupllierpayment = DB::table('supplier_payments')->whereDate('created_at','<',date('Y-m-d'))->sum('paid');
+                    $prevsupllierpayment = DB::table('supplier_payments')->whereDate('created_at','<',date('Y-m-d'))->where('payment_type',1)->sum('paid');
                     $first_balance = Config::get('custom-setting.current_balance');
                     $todayimport = 
                     $todayorder  + $todaytreasurydeposite + $clientinstallmentPaidtoday ; 

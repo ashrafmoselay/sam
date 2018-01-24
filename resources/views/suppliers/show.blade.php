@@ -42,13 +42,14 @@
 			<table class="table table-hover table-bordered">
 				<thead>
 					<tr>
-						<td colspan="6">المدفوعات</td>
+						<td colspan="7">المدفوعات</td>
 					</tr>
 					<tr class="active">
 						<th>{{ trans('app.ID') }}</th>
 						<th>{{ trans('app.esal_num') }}</th>
 						<th>{{ trans('app.Created') }}</th>
 						<th>{{ trans('app.Total') }}</th>
+						<th>طريقة الدفع</th>
 						<th>{{ trans('app.Paid') }}</th>
 						<th>{{ trans('app.Due') }}</th>
 					</tr>
@@ -60,11 +61,21 @@
 					<td>{{$clt->esal_num}}</td>
 					<td>{{date('Y-m-d', strtotime($clt->created_at))}}</td>
 					<td>{{$clt->total}}</td>
+					<td>{{$clt->payment_type}}</td>
 					<td>{{$clt->paid}}</td>
 					<td>{{$clt->due}}</td>
 				</tr>
 				@endforeach
 				</tbody>
+				<tfoot>
+				<tr class="info">
+					<td colspan="3">المجموع</td>
+					<td>{{$suppliers->installment->sum('paid')}}</td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				</tfoot>
 			</table>
 			<table class="table table-hover table-bordered">
 				<thead>

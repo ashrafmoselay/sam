@@ -8,7 +8,7 @@ class SupplierPayments extends Model
 {
     protected $table = 'supplier_payments'; 
     protected $fillable = [
-        'supplier_id', 'total', 'paid','due','esal_num','created_at'
+        'supplier_id', 'total', 'paid','due','esal_num','created_at','payment_type'
     ]; 
     public function supplier(){
     	return $this->belongsTo('\App\Suppliers','supplier_id','id');
@@ -47,5 +47,8 @@ class SupplierPayments extends Model
         }else{
             return $query->Paginate($size);
         }
+    }
+    public function getPaymentTypeAttribute($value){
+        return ($value==1)?'كاش':'شيك';
     }
 }

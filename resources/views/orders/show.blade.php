@@ -45,7 +45,7 @@
                 <h2>
                     {{Config::get('custom-setting.SiteName')}}
                 </h2>
-                    
+
                 <h3 class="pull-left">رقم الفاتورة : {{$invoice->id}}</h3>
                 @if(Config::get('custom-setting.mobile'))
                 <br><span>{{Config::get('custom-setting.mobile')}}</span>
@@ -68,7 +68,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="row">
         <div class="col-md-12">
             <div class="panel panel-default">
@@ -100,7 +100,7 @@
                                     <td class="text-center">{{$prod->total}}</td>
                                 </tr>
                                 @endforeach
-                                
+
                             </tbody>
                         </table>
                         <table class="table-condensed pull-left">
@@ -110,7 +110,7 @@
                                     <td class="no-line text-right">{{$invoice->total}}</td>
                                     <td class="no-line text-center"><strong>قيمة الخصم : </strong></td>
                                     <td class="no-line text-right">
-                                        
+
                                         @php
                                             $discount = 0;
                                             $dist = $invoice->discount.' ج.م';
@@ -130,18 +130,20 @@
                                 <td class="no-line text-center"><strong>المبلغ المتبقى : </strong></td>
                                 <td class="no-line text-right">{{$invoice->due}}</td>
                                 </tr>
+                                @if($invoice->id==$invoice->client->orders->last()->id)
                                 <tr>
                                 <td class="no-line text-center"><strong>رصيد سابق : </strong></td>
                                 <td class="no-line text-right">
-                                <?php $pervAccount = $invoice->client->due - $invoice->due; ?>
-                                {{$pervAccount}}</td>
+<?php $pervAccount = $invoice->client->due-abs($invoice->due);?>
+{{$pervAccount}}</td>
                                 <td class="no-line text-center"><strong>الرصيد الحالى : </strong></td>
                                 <td class="no-line text-right">{{$invoice->due + $pervAccount}}</td>
                                 </tr>
+                                @endif
                                 </tbody>
                         </table>
                         <p class="pull-right hideonprint">{{$invoice->note}}<br/><br/>
-                            
+
                         </p>
                     </div>
                 </div>

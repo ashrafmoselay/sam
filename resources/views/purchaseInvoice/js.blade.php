@@ -1,6 +1,6 @@
 @section('javascript')
 <script type="text/javascript">
-$(document).ready(function(){    
+$(document).ready(function(){
     initTypeahead();
 	$(document).on("click",".btn-danger",function(e){
 		e.preventDefault();
@@ -57,7 +57,7 @@ $(document).ready(function(){
     var elm = $(this).closest('div.productList').find('input.typeahead');
     if(elm.val()){
       elm.typeahead('lookup').focus();
-      setTimeout(function(){ 
+      setTimeout(function(){
         $("ul.typeahead").find("li.active a").trigger("click");
       }, 200);
     }
@@ -66,7 +66,7 @@ $(document).ready(function(){
    e.preventDefault();
    var due = parseFloat($(".modal-body .total").val()) - parseFloat($(".modal-body .paid").val());
    $(".modal-body .due").val(due);
- }); 
+ });
  $(document).on("submit",".modal-body form",function(e){
   e.preventDefault();
   var form = $(this);
@@ -83,11 +83,12 @@ $(document).ready(function(){
     $('.bootstrap-select .filter-option').text(text);
    }
   });
-  
+
  });
   $(document).on("change",".unitclass",function(e){
     e.preventDefault();
     var cost = $(this).find("option:selected").attr("rel");
+    cost = parseFloat(cost).toFixed(2);
     $(this).closest('div.productList').find('.originalprice').val(cost);
     $(this).closest('div.productList').find('.qty').trigger('input');
   });
@@ -96,9 +97,10 @@ function initTypeahead(){
 	var path = "{{ route('autocomplete') }}";
 	$('input.typeahead').typeahead({
         source:  function (query, process) {
+          var store = $(this.$element).closest('div.productList').find('.storeName').val();
           var unit = $(this.$element).closest('div.productList').find('.unit').val();
-        return $.get(path, { query: query,store_id: $('#store_id').val(),unit:unit }, function (data) {
-        		
+        return $.get(path, { query: query,store_id: store,unit:unit }, function (data) {
+
                 return process(data);
             });
         },
@@ -107,38 +109,33 @@ function initTypeahead(){
 	    },
         afterSelect: function (item) {
 
-          var elm = $(this.$element);
+            var elm = $(this.$element);
 
-          elm.parents('div.productList').find('.unitclass').attr('cost',item.cost_price);
-          elm.parents('div.productList').find('.unitclass').attr('unitid',item.unitid);
-          elm.parents('div.productList').find('.unitclass').attr('title',item.title);
-          //elm.parents('div.productList').find('.unitclass').attr('price',item.price);
-          //elm.parents('div.productList').find('.unitclass').attr('price2',item.price2);
-          //elm.parents('div.productList').find('.unitclass').attr('price3',item.price3);
-          var unitid = item.unitid.split(",");
-          var title = item.title.split(",");
-          var cost = item.cost_price.split(",");
-          //var price = item.price.split(",");
-          //var price2 = item.price2.split(",");
-          //var price3 = item.price3.split(",");
-          elm.parents('div.productList').find('.unitclass').html("");
-          option = "";
-          storUnitName = "";
-          for(i=0;i<unitid.length;i++){
+            var unitI = elm.parents('div.productList').find('.unitclass');
+            unitI.attr('cost',item.cost_price);
+            unitI.attr('unitid',item.unitid);
+            unitI.attr('title',item.title);
+            var unitid = item.unitid.split(",");
+            var title = item.title.split(",");
+            var cost = item.cost_price.split(",");
+            unitI.html("");
+            option = "";
+            storUnitName = "";
+            for(i=0;i<unitid.length;i++){
             if(item.storeID==unitid[i]){
               storUnitName = title[i];
             }
             option += "<option rel='"+cost[i]+"' value = '"+unitid[i]+"'>"+title[i]+"</option>"
-          }
-          elm.parents('div.productList').find('.unitclass').html(option);
-          $(".unitclass").trigger("change");
-          var qty = parseFloat(item.quantity).toFixed(2);
-          if(isInt(item.quantity)){
+            }
+            unitI.html(option);
+            unitI.trigger("change");
+            var qty = parseFloat(item.quantity).toFixed(2);
+            if(isInt(item.quantity)){
             qty = item.quantity;
-          }
-          elm.closest('div.productList').find('.avilableQty').text("متاح:"+qty+" "+storUnitName);
+            }
+            elm.closest('div.productList').find('.avilableQty').text("متاح:"+qty+" "+storUnitName);
         },
-    });	
+    });
 }
 function calculateCost(){
 	var totalCost =0;

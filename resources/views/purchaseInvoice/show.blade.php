@@ -48,8 +48,10 @@
 					<tr class="active">
 						<th>{{ trans('app.ID') }}</th>
 						<th>{{ trans('app.Products') }}</th>
+						<th>المخزن</th>
 						<th>{{ trans('app.Cost Price') }}</th>
 						<th>{{ trans('app.Qantity') }}</th>
+						<th>الوحدة</th>
 						<th>{{ trans('app.Total') }}</th>
 					</tr>
 				</thead>
@@ -58,8 +60,10 @@
 				<tr>
 					<td>{{$key+1}}</td>
 					<td>{{$prod->product->title}}</td>
+					<td>{{$prod->store->address}}</td>
 					<td>{{$prod->cost}}</td>
 					<td>{{$prod->qty}}</td>
+                    <td>{{isset($prod->unit->title)?$prod->unit->title:'عدد'}}</td>
 					<td>{{$prod->total}}</td>
 				</tr>
 				@endforeach
@@ -72,7 +76,7 @@
 
 @section('javascript')
 <script type="text/javascript">
-$(document).ready(function(){   
+$(document).ready(function(){
 	$('.print-window').click(function() {
 		$(this).hide();
 	    window.print();

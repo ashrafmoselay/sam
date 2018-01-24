@@ -40,11 +40,9 @@
 						success:function(result){
 							if(result.length){
 
-							swal(
-								{
+							swal({
 								title:"خطأ!", text:"لا يمكنك حذف هذه الفئه لانه تحتوى على أصناف",type:"error",confirmButtonText: "تمام",
-								}
-								);
+								});
 							}else{
 							btn.closest('tr').fadeOut();
 							}

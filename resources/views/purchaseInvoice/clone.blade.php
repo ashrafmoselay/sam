@@ -1,26 +1,33 @@
+@php
+$stores = \App\Store::get();
+@endphp
 <div style="display: none;" class="cloneDiv">
 	<div class="col-md-12 productList">
+
+	<div class="form-group col-md-2">
+		<label for="">إختر المخزن</label>
+
+		<select name="store_id[]" id="store_id" class="form-control storeName" required="required">
+			@foreach($stores as $s)
+				<option value="{{$s->id}}">{{$s->address}}</option>
+			@endforeach
+		</select>
+
+	</div>
 	  <div class="col-md-3">
 	  	<div class="form-group">
 			<label for="">الصنف </label>
 			<input name="product_id[]" autocomplete="off" class="typeahead form-control" required=""  type="text">
-			
+
 		</div>
 	  </div>
-	  @if(!$item->id)
-		<div class="checknew form-group">
-			جديد
-			<input class="form-control isnew" type="checkbox" name="isnew[]" class="newProd">
+		<div class="col-md-1">
+			<div class="checknew form-group">
+				<label>جديد</label>
+				<input class="form-control isnew" type="checkbox" name="isnew[]" class="newProd">
+			</div>
 		</div>
-		@endif
-	  <div class="col-md-3">
-	  	<div class="form-group">
-			<label for="">{{ trans('app.Cost Price') }}</label>
-			<input name="cost[]" autocomplete="off" class="form-control cost originalprice" required=""  type="number" step="0.01" min="0">
-			
-		</div>
-	  </div>
-	  <div class="col-md-3">
+	  <div class="col-md-2">
 	  	<div class="form-group">
 			<label for="">{{ trans('app.Qantity') }} <span class="avilableQty"></span></label>
 			<div class="input-group">
@@ -31,11 +38,18 @@
 			</div>
 		</div>
 	  </div>
-	  <div class="col-md-3">
+	  <div class="col-md-2">
+	  	<div class="form-group">
+			<label for="">{{ trans('app.Cost Price') }}</label>
+			<input name="cost[]" autocomplete="off" class="form-control cost originalprice" required=""  type="number" step="0.01" min="0">
+
+		</div>
+	  </div>
+	  <div class="col-md-2">
 	  	<div class="form-group">
 			<label for="">{{ trans('app.Total') }} </label>
 			<input name="totalcost[]" class="form-control total" required="" min="0"  type="number" step="0.01">
-			
+
 		</div>
 	  </div>
 	  <div class="btnx">

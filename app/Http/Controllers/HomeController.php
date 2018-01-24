@@ -15,7 +15,46 @@ class HomeController extends BaseController {
 	public function __construct() {
 		parent::__construct();
 	}
-
+	public function GetCheque()
+	{
+		try {
+			DB::beginTransaction();
+			$allcheq = \App\Cheq::where('is_paid',0)
+				->where('auto',1)
+				->where('date','<=',date('Y-m-d'))
+				->get();
+			//dd($allcheq );
+			foreach ($allcheq as $cheq) {
+				$cheq->update(['is_paid' => 1]);
+				$inputs["bank_id"] = $cheq->bank_id;
+				$inputs["note"] = "خصم قيمة الشيك رقم " . $cheq->cheq_num . " لمورد " . $cheq->supplier->name;
+				$inputs["op_date"] = date('Y-m-d');
+				$inputs["type"] = "1";
+				$inputs["total"] = $cheq->bank->balance;
+				$inputs["value"] = $cheq->value;
+				$inputs["due"] = $cheq->bank->balance - $cheq->value;
+				\App\Transaction::create($inputs);
+				$cheq->bank->balance -= $cheq->value;
+				$cheq->bank->save();
+				$supplier = \App\Suppliers::find($cheq->supplier_id);
+				$payment["supplier_id"] = $cheq->supplier_id;
+				$payment["esal_num"] = " رقم الشيك " . $cheq->cheq_num;
+				$payment["created_at"] = date('Y-m-d');
+				$payment["total"] = $supplier->due;
+				$payment["paid"] = $cheq->value;
+				$payment["due"] = $supplier->due - $cheq->value;
+                $payment["payment_type"] = 2;
+				\App\SupplierPayments::create($payment);
+				$supplier->paid += $cheq->value;
+				$supplier->due -= $cheq->value;
+				$supplier->save();
+			}
+			DB::commit();
+		} catch (\Exception $e) {
+			DB::rollback();
+			//dd($e->getMessage());
+		}
+	}
 	/**
 	 * Show the application dashboard.
 	 *
@@ -31,6 +70,7 @@ class HomeController extends BaseController {
 		return view('report', compact('date'));
 	}
 	public function index() {
+		$this->GetCheque();
 		return view('home');
 	}
 	public function ArabicDate() {
@@ -75,6 +115,8 @@ class HomeController extends BaseController {
 			DB::table('products_transit')->truncate();
 			DB::table('return_details')->truncate();
 			DB::table('returns')->truncate();
+			DB::table('cheq')->truncate();
+			DB::table('transactions')->truncate();
 			//DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 			$request->session()->flash('alert-success', 'تمت العملية بنجاح');
 			DB::commit();
@@ -237,12 +279,12 @@ class HomeController extends BaseController {
 	}
 }
 class MyTCPDF extends \TCPDF {
-	public function Footer() {
-		$this->SetX($this->original_lMargin);
-		$this->SetY(-15);
-		$footer_data = \Config::get('custom-setting.Address');
-		$this->Cell(0, 10, $footer_data, 'T', false, 'R');
-		$this->Cell(0, 10, $this->getAliasNumPage().'/'.$this->getAliasNbPages(), 'T', 0, 'L');
-	}
+    public function Footer() {
+        $this->SetX($this->original_lMargin);
+        $this->SetY(-15);
+        $footer_data = \Config::get('custom-setting.Address');
+        $this->Cell(0, 10, $footer_data, 'T', false, 'R');
+        $this->Cell(0, 10, $this->getAliasNumPage().'/'.$this->getAliasNbPages(), 'T', 0, 'L');
+    }
 
 }

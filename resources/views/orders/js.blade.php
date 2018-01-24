@@ -8,6 +8,16 @@ $(document).ready(function(){
   $(this).closest('div').parent('div').remove();
   calculateCost();
  });
+
+$(document).on("change",".paymentType",function(e){
+    $(".bank").hide();
+    $(".bank").find('select').attr('required',false);
+    if($(this).val()==3){
+        $(".bank").show();
+        $(".bank").find('select').attr('required',true);
+    }
+});
+$(".paymentType").trigger('change');
  $(document).on("click",".addnewproducts",function(e){
   e.preventDefault();
   var clone = $('.cloneDiv').html();
@@ -132,13 +142,13 @@ $(document).ready(function(){
    });
    if(!validqty){
        swal({
-    title:'خطأ !', text:'المية غير متاحة لبعض المنتجات',type:"error",confirmButtonText: "ﻡﺎﻤﺗ",
+    title:'خطأ !', text:'المية غير متاحة لبعض المنتجات',type:"error",confirmButtonText: "تمام",
     });
     return false;
    }else if(!generalvalid){
 
        swal({
-    title:'خطأ !', text:'ﺢﻴﺤﺻ ﻞﻜﺸﺑ ﺓﺭﻮﺗﺎﻔﻟا ﺕﺎﻧﺎﻴﺑ ﺔﺑﺎﺘﻛ ءﺎﺟﺮﺑ',type:"error",confirmButtonText: "ﻡﺎﻤﺗ",
+    title:'خطأ !', text:'برجاء التأكد من بيانات الفاتورة',type:"error",confirmButtonText: "تمام",
     });
    }else if(show){
     swal({
@@ -201,39 +211,36 @@ function initTypeahead(){
 
         afterSelect: function (item) {
 
-          var elm = $(this.$element);
-
-          elm.parents('div.productList').find('.unitclass').attr('cost',item.cost_price);
-          elm.parents('div.productList').find('.unitclass').attr('unitid',item.unitid);
-          elm.parents('div.productList').find('.unitclass').attr('title',item.title);
-          elm.parents('div.productList').find('.unitclass').attr('price',item.price);
-          elm.parents('div.productList').find('.unitclass').attr('price2',item.price2);
-          elm.parents('div.productList').find('.unitclass').attr('price3',item.price3);
-          var unitid = item.unitid.split(",");
-          var title = item.title.split(",");
-          var cost = item.cost_price.split(",");
-          var price = item.price.split(",");
-          var price2 = item.price2.split(",");
-          var price3 = item.price3.split(",");
-          elm.parents('div.productList').find('.unitclass').html("");
-          option = "";
-          storUnitName = "";
-          for(i=0;i<unitid.length;i++){
+            var elm = $(this.$element);
+            var unitI = elm.parents('div.productList').find('.unitclass');
+            unitI.attr('cost',item.cost_price);
+            unitI.attr('unitid',item.unitid);
+            unitI.attr('title',item.title);
+            unitI.attr('price',item.price);
+            unitI.attr('price2',item.price2);
+            unitI.attr('price3',item.price3);
+            var unitid = item.unitid.split(",");
+            var title = item.title.split(",");
+            var cost = item.cost_price.split(",");
+            var price = item.price.split(",");
+            var price2 = item.price2.split(",");
+            var price3 = item.price3.split(",");
+            unitI.html("");
+            option = "";
+            storUnitName = "";
+            for(i=0;i<unitid.length;i++){
             if(item.storeID==unitid[i]){
               storUnitName = title[i];
             }
             option += "<option price='"+price[i]+"' price2='"+price2[i]+"' price3='"+price3[i]+"' rel='"+cost[i]+"' value = '"+unitid[i]+"'>"+title[i]+"</option>"
-          }
-          elm.parents('div.productList').find('.unitclass').html(option);
-          $(".unitclass").trigger("change");
-          var qty = parseFloat(item.quantity).toFixed(2);
-          if(isInt(item.quantity)){
+            }
+            unitI.html(option);
+            unitI.trigger("change");
+            var qty = parseFloat(item.quantity).toFixed(2);
+            if(isInt(item.quantity)){
             qty = item.quantity;
-          }
-          elm.closest('div.productList').find('.avilableQty').text("متاح:"+qty+" "+storUnitName);
-          /*elm.closest('div.productList').find('input.originalprice').val(item.cost);
-          elm.closest('div.productList').find('input.price').val(price);
-          $(".price").trigger('input');*/
+            }
+            elm.closest('div.productList').find('.avilableQty').text("متاح:"+qty+" "+storUnitName);
         },
     });
 

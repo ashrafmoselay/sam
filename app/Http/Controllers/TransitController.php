@@ -54,6 +54,7 @@ class TransitController extends BaseController
                 $storeFrom = ProductsStore::where('product_id',$productid)->where('store_id',$from)->first();
 
                 $unit_id = $inputs['store_unit'][$key];
+
                 $orderQty=$qty;
                 if($unit_id && !empty($unit_id)){
                     $prodstorUnit = $storeFrom->unit_id;
@@ -75,27 +76,36 @@ class TransitController extends BaseController
                 $storeFrom->save();
                 if($storeqty<$orderQty)throw new \Exception('الكمية غير متاحة بالمخزن المحول منه الكمية الموجودة بالمخزن هى '.$storeqty);
                 $storeTo = ProductsStore::where('product_id',$productid)->where('store_id',$to)->first();
-
-
                 $unit_id = $inputs['store_unit'][$key];
                 $orderQty=$qty;
-                if($unit_id && !empty($unit_id)){
-                    $prodstorUnit = $storeTo->unit_id;
-                    $storUnit = ProductStoreUnit::where('product_id',$productid)->where('unit_id',$prodstorUnit)->first();
+                if(!empty($storeTo)) {
+	                if ($unit_id && !empty($unit_id)) {
+		                $prodstorUnit = $storeTo->unit_id;
+		                $storUnit = ProductStoreUnit::where('product_id', $productid)->where('unit_id',
+			                $prodstorUnit)->first();
 
-                    if($prodstorUnit != $unit_id){
-                        $orderUnit = ProductStoreUnit::where('product_id',$productid)->where('unit_id',$unit_id)->first();
-                        if($storUnit->pieces_num == $orderUnit->pieces_num){
-                            $orderQty=$qty;
-                        }elseif($storUnit->pieces_num > $orderUnit->pieces_num){
-                            $orderQty=$qty/$storUnit->pieces_num;
-                        }else{
-                            $orderQty=$qty * $orderUnit->pieces_num;
-                        }   
-                    }
+		                if ($prodstorUnit != $unit_id) {
+			                $orderUnit = ProductStoreUnit::where('product_id', $productid)->where('unit_id',
+				                $unit_id)->first();
+			                if ($storUnit->pieces_num == $orderUnit->pieces_num) {
+				                $orderQty = $qty;
+			                } elseif ($storUnit->pieces_num > $orderUnit->pieces_num) {
+				                $orderQty = $qty / $storUnit->pieces_num;
+			                } else {
+				                $orderQty = $qty * $orderUnit->pieces_num;
+			                }
+		                }
+	                }
+	                $storeTo->qty += $orderQty;
+	                $storeTo->save();
+                }else{
+	                $prodstore['store_id']   = $to;
+	                $prodstore['qty']        = $orderQty;
+	                $prodstore['cost']       = $storeFrom->cost;
+	                $prodstore['unit_id']    = $storeFrom->unit_id;;
+	                $prodstore['product_id'] = $productid;
+	                ProductsStore::create($prodstore);
                 }
-                $storeTo->qty += $orderQty;
-                $storeTo->save();
                 Transit::create([
                     'product_id'=>$productid,
                     'from_store_id'=>$from,
@@ -107,7 +117,7 @@ class TransitController extends BaseController
             DB::commit();
         }catch(\Exception $e){
              DB::rollback();
-             //var_dump($e->getMessage());die;
+             var_dump($e->getMessage());die;
             $request->session()->flash('alert-danger', 'حدث خطأ أثناء العملية من فضلك تأكد من المخزن المحول منه واليه والكمية');
         }
         return redirect('transit');

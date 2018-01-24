@@ -1,5 +1,5 @@
 <div @if(!isset($unitItem) && !isset($first)) style="display: none;" @endif  class="cloneDiv">
-<div class="row unitItem">	
+<div class="row unitItem">
 	<div class="col-md-2">
 		<div class="form-group">
 			<label for="">الوحدة</label>
@@ -14,7 +14,7 @@
 	<div class="col-md-1">
 		<div class="form-group">
 			<label for="">العدد</label>
-			<input required="" type="text" name="pices_num[]" class="form-control" value="{{(isset($unitItem))?$unitItem->pieces_num:''}}">
+			<input required="" type="text" name="pices_num[]" class="form-control" value="{{(isset($unitItem))?$unitItem->pieces_num:1}}">
 		</div>
 	</div>
 	<div class="col-md-2">
@@ -32,12 +32,12 @@
 	<div class="form-group col-md-2">
 		<label for="">سعر البيع الجملة</label>
 		<input name="price2[]" min="0" type="number" step="0.01"  class="form-control" value="{{(isset($unitItem))?$unitItem->price2:''}}">
-		
+
 	</div>
 	<div class="form-group col-md-2">
 		<label for="">سعر البيع جملة الجملة</label>
 		<input name="price3[]" min="0" type="number" step="0.01"  class="form-control" value="{{(isset($unitItem))?$unitItem->price3:''}}">
-		
+
 	</div>
 	<div class="col-md-2 hide">
 		<div class="form-group">

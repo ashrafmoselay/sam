@@ -9,6 +9,7 @@
 						<th>{{ trans('app.Supplier Name') }}</th>
 						<th>{{ trans('app.esal_num') }}</th>
 						<th>{{ trans('app.Total') }}</th>
+						<th>طريقة الدفع</th>
 						<th>{{ trans('app.Paid') }}</th>
 						<th>{{ trans('app.Due') }}</th>
 						<th>{{ trans('app.Created') }}</th>
@@ -21,6 +22,7 @@
 					<td>{{$clt->supplier->name}}</td>
 					<td>{{$clt->esal_num}}</td>
 					<td>{{$clt->total}}</td>
+					<td>{{$clt->payment_type}}</td>
 					<td>{{$clt->paid}}</td>
 					<td>{{$clt->due}}</td>
 					<td>{{date('Y-m-d', strtotime($clt->created_at))}}</td>
@@ -28,7 +30,7 @@
 				@endforeach
 				<tfoot>
 					<tr class="danger">
-						<td colspan="3">{{trans('app.Total')}}</td>
+						<td colspan="4">{{trans('app.Total')}}</td>
 						<td></td>
 						<td>{{$list->sum('paid')}}</td>
 						<td colspan="2"></td>

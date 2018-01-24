@@ -64,12 +64,19 @@
 				</tr>
 				@endforeach
 				</tbody>
+				<tfoot>
+					<tr class="info">
+						<td colspan="3">المجموع</td>
+						<td>{{$client->installment->sum('paid')}}</td>
+						<td></td>
+					</tr>
+				</tfoot>
 			</table>
 		</div>
 	</div>
 	@endif
 	<?php 
-	 $list = \App\Orders::where('client_id',$client->id)->Paginate();
+	 $list = \App\Orders::where('client_id',$client->id)->get();
 	 ?>
 	@if(!empty($list))
     <div class="row">
@@ -102,6 +109,8 @@
 							<td> {{ $item->created_at }} </td>
 							<td>
 							<a class="btn btn-primary getdetiles" rel="details{{$item->id}}" href="#" >التفاصيل</a>
+							<a target="_blank" class="btn btn-success" href="{{url('orders')}}/{{ $item->id
+							}}">عرض الفاتورة</a>
 							</td>
 						</tr>
 						<tr id="details{{$item->id}}" style="display: none;">
@@ -142,6 +151,12 @@
 							                                @endforeach
 							                                
 							                            </tbody>
+														<tfoot>
+															<tr class="danger">
+																<td colspan="4">المجموع</td>
+																<td>{{$item->details->sum('total')}}</td>
+															</tr>
+														</tfoot>
 							                        </table>
 							                    </div>
 							                </div>
@@ -164,7 +179,7 @@
 			    </tfoot>
 			</table>	
 			 <div class="row text-center">
-			 	{!! $list->appends(\Request::except('page'))->render() !!}
+			 	{{-- $list->appends(\Request::except('page'))->render() --}}
 			 </div>
 		</div>
 	</div>

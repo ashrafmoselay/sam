@@ -1,18 +1,18 @@
 <?php
- // generated at 2017-11-01 16:04:39 
+ // generated at 2018-01-09 22:34:35 
 return array (
-  'SiteName' => 'شركة عباد الرحمن للأجهزة الكهربائية',
-  'AdminName' => 'الشيخ فرج',
-  'Address' => 'البدرشين - بجوار معرض 25 يناير ',
+  'SiteName' => 'مؤسسة الجعيدى للأجهزة الكهربائية',
+  'AdminName' => 'عادل الجعيدى',
+  'Address' => 'أبو النمرس',
   'background' => '#ffffff',
-  'page_size' => '50',
+  'page_size' => '30',
   'current_balance' => '0',
   'FooterText' => 'جميع الحقوق محفوظة 2017 ©',
   'show_cost_price' => '1',
   'observe' => '0',
   'invoiceTemplate' => '1',
   'use_barcode' => '2',
-  'show_profit' => '2',
+  'show_profit' => '1',
   'mobile' => 'الموبيل : 01142864419 - 01010101680',
   'size' => '14',
   'PrintSize' => '20',

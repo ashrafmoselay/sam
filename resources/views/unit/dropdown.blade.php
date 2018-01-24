@@ -8,7 +8,7 @@
 	}
 	.input-group-addon:last-child {
 	    padding: 0;
-	    min-width: 97px;
+	    min-width: 60px;
 	}
 </style>
 <select required="" name="store_unit[]" class="unitclass" selUnit = "{{isset($selId)?$selId:''}}">

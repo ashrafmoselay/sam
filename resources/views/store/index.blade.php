@@ -17,10 +17,10 @@
 						<th>جرد المخزن</th>
 						<th>{{ trans('app.action') }}</th>
 					</tr>
-				</thead> 
+				</thead>
 				<tbody>
-					@php 
-						$total = 0;  
+					@php
+						$total = 0;
 					@endphp
 					@foreach($list as $key=>$item)
 						<tr>
@@ -40,9 +40,9 @@
 								{{round($totalRemainInStock,2)}}
 							</td>
 							<td>
-							<a class="btn btn-primary" href="store/{{ $item->id }}/edit" role="button">{{ trans('app.Edit') }}</a> 
+							<a class="btn btn-primary" href="store/{{ $item->id }}/edit" role="button">{{ trans('app.Edit') }}</a>
 							<a class="btn btn-warning" href="store/{{ $item->id }}" role="button">عرض</a>
-							<a class="btn btn-danger" href="store/destroy/{{ $item->id }}" role="button">{{ trans('app.Delete') }}</a> 
+							<a class="btn btn-danger" href="store/destroy/{{ $item->id }}" role="button">{{ trans('app.Delete') }}</a>
 
 							</td>
 						</tr>
@@ -79,10 +79,10 @@
 		         confirmButtonColor: "#DD4140",
 		         closeOnConfirm: false,
 		         showLoaderOnConfirm: true,
-			     cancelButtonText: "إلغاء",      
-			     confirmButtonText: "نعم متأكد", 
+			     cancelButtonText: "إلغاء",
+			     confirmButtonText: "نعم متأكد",
 		      },
-		      function(){	
+		      function(){
 					$.ajax({
 						url:url_,
 						success:function(result){

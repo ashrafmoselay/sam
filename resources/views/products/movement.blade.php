@@ -9,11 +9,11 @@
        		<div class="form-group pull-right">
 			   <h4>متابعة حركة صنف ( {{$product->title}} )</h4>
 			</div>
-			<?php 
-				$store =\App\ProductsStore::where('product_id',$product->id)->groupBy('store_id')->selectRaw('*, sum(qty-sale_count) as sum')->get();
-				$storeqty = \App\ProductsStore::where('product_id',$product->id)->sum('qty-sale_count');
-			?>
-			<table class="table table-hover table-striped table-bordered">
+<?php
+$store    = \App\ProductsStore::where('product_id', $product->id)->groupBy('store_id')->selectRaw('*, sum(qty-sale_count) as sum')->get();
+$storeqty = \App\ProductsStore::where('product_id', $product->id)->sum('qty-sale_count');
+?>
+<table class="table table-hover table-striped table-bordered">
 				<thead>
 					<tr>
 						<td colspan="3">كمية المنتج بالمخازن</td>
@@ -39,7 +39,7 @@
 			<table class="table table-hover table-striped table-bordered">
 				<thead>
 					<tr>
-						<td colspan="7">فواتير المشتريات</td>
+						<td colspan="8">فواتير المشتريات</td>
 					</tr>
 					<tr class="active">
 						<th>{{ trans('app.ID') }}</th>
@@ -48,6 +48,7 @@
 						<th>{{ trans('app.Products') }}</th>
 						<th>{{ trans('app.Cost Price') }}</th>
 						<th>{{ trans('app.Qantity') }}</th>
+						<th>الوحدة</th>
 						<th>{{ trans('app.Total') }}</th>
 					</tr>
 				</thead>
@@ -60,6 +61,7 @@
 					<td>{{$prod->product->title}}</td>
 					<td>{{$prod->cost}}</td>
 					<td>{{$prod->qty}}</td>
+					<td>{{isset($prod->unit->title)?$prod->unit->title:'عدد'}}</td>
 					<td>{{$prod->total}}</td>
 				</tr>
 				@endforeach
@@ -67,12 +69,13 @@
 				<tfoot>
 					<tr class="danger">
 						<td colspan="5">{{trans('app.Total')}}</td>
-						<?php 
-							$invoiceqty = $purchaseList->sum('qty');
-							$totalqty = $totalqty +$storeqty;
-							$diff =  $totalqty - $invoiceqty;
-						?>
-						<td>{{ ($diff>0)?$invoiceqty . " +  $diff ( ".trans('app.intial')." ) = $totalqty":$invoiceqty }}</td>
+<?php
+$invoiceqty = $purchaseList->sum('qty');
+$totalqty   = $totalqty+$storeqty;
+$diff       = $totalqty-$invoiceqty;
+?>
+<td>{{ ($diff>0)?$invoiceqty . " +  $diff ( ".trans('app.intial')." ) = $totalqty":$invoiceqty }}</td>
+						<td></td>
 						<td>{{$purchaseList->sum('total')}}</td>
 					</tr>
 				</tfoot>
@@ -125,7 +128,7 @@
 			<table class="table table-hover table-striped table-bordered">
 				<thead>
 					<tr>
-						<td colspan="7">مرتجعات المشتريات</td>
+						<td colspan="8">مرتجعات المشتريات</td>
 					</tr>
 					<tr class="active">
 						<th>{{ trans('app.ID') }}</th>
@@ -134,6 +137,7 @@
 						<th>اسم الصنف</th>
 						<th>{{ trans('app.Cost Price') }}</th>
 						<th>{{ trans('app.Qantity') }}</th>
+						<th>الوحدة</th>
 						<th>{{ trans('app.Total') }}</th>
 					</tr>
 				</thead>
@@ -146,6 +150,7 @@
 					<td>{{$prod->product->title}}</td>
 					<td>{{$prod->cost}}</td>
 					<td>{{$prod->qty}}</td>
+					<td>{{isset($prod->unit->title)?$prod->unit->title:'عدد'}}</td>
 					<td>{{$prod->total}}</td>
 				</tr>
 				@endforeach
@@ -154,6 +159,7 @@
 					<tr class="danger">
 						<td colspan="5">{{trans('app.Total')}}</td>
 						<td>{{ $returns->sum('qty') }}</td>
+						<td></td>
 						<td>{{$returns->sum('total')}}</td>
 					</tr>
 				</tfoot>
@@ -162,7 +168,7 @@
 			<table class="table table-hover table-striped table-bordered">
 				<thead>
 					<tr>
-						<td colspan="7">مرتجعات المبيعات</td>
+						<td colspan="8">مرتجعات المبيعات</td>
 					</tr>
 					<tr class="active">
 						<th>{{ trans('app.ID') }}</th>
@@ -171,11 +177,12 @@
 						<th>اسم الصنف</th>
 						<th>السعر</th>
 						<th>{{ trans('app.Qantity') }}</th>
+						<th>الوحدة</th>
 						<th>{{ trans('app.Total') }}</th>
 					</tr>
 				</thead>
 				<tbody>
-				<?php $list = \App\OrderReturnDetails::where('product_id',$product->id)->get(); ?>
+<?php $list = \App\OrderReturnDetails::where('product_id', $product->id)->get();?>
 				@foreach($list as $key=>$prod)
 				<tr>
 					<td>{{$key+1}}</td>
@@ -184,6 +191,7 @@
 					<td>{{$prod->product->title}}</td>
 					<td>{{$prod->cost}}</td>
 					<td>{{$prod->qty}}</td>
+					<td>{{isset($prod->unit->title)?$prod->unit->title:'عدد'}}</td>
 					<td>{{$prod->total}}</td>
 				</tr>
 				@endforeach
@@ -192,6 +200,7 @@
 					<tr class="danger">
 						<td colspan="5">{{trans('app.Total')}}</td>
 						<td>{{ $list->sum('qty') }}</td>
+						<td></td>
 						<td>{{$list->sum('total')}}</td>
 					</tr>
 				</tfoot>

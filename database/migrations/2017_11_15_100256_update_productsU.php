@@ -17,8 +17,8 @@ class UpdateProductsU extends Migration
             $table->dropColumn(['price','price2','price3','cost']);
         });
         Schema::table('product_store_unit', function (Blueprint $table) {
-            $table->double('price2')->default(0);
-            $table->double('price3')->default(0);
+            $table->double('price2')->default(0)->nullable();
+            $table->double('price3')->default(0)->nullable();
         });
     }
 

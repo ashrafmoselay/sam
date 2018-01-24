@@ -57,12 +57,22 @@
 	</div>
 	<div class="form-group col-md-3">
 		<label for="">{{trans('app.Payment Type')}}</label>
-		<select name="payment_type"  class="form-control" required="required">
-		<option {{($item->payment_type==1)?'selected=""':''}}  value="1">{{trans('app.Cash Payment')}}</option>
-		<option {{($item->payment_type==2)?'selected=""':''}} value="2">{{trans('app.Payment in installments')}}</option>
-		
+		<select name="payment_type"  class="form-control paymentType" required="required">
+		<option {{($item->getOriginal('payment_type')==1)?'selected=""':''}}  value="1">{{trans('app.Cash Payment')}}</option>
+		<option {{($item->getOriginal('payment_type')==2)?'selected=""':''}} value="2">{{trans('app.Payment in installments')}}</option>
+		<option {{($item->getOriginal('payment_type')==3)?'selected=""':''}} value="3">فيزا</option>
 		</select>
 	</div>
+<div class="form-group col-md-12 bank">
+	<label for="">إختر البنك</label>
+	<select name="bank_id"  class="form-control">
+		<option value="">إختر البنك</option>
+		@foreach(\App\Bank::get() as $b)
+			<option @if($item->bank_id==$b->id) selected="selected" @endif value="{{$b->id}}">الدفع بالفيزا {{$b->name}}</option>
+		@endforeach
+	</select>
+</div>
+
 	@foreach($item->details as $key=>$prod)
 		<div class="col-md-12 productList">
 			<?php 

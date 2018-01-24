@@ -1,5 +1,5 @@
 <style type="text/css">
-	.boxX{    
+	.boxX{
 		border-top: 2px solid #d0d0d0;
     	margin-bottom: 15px;
 	    background-color: #f7f7f7;
@@ -11,7 +11,7 @@
 	    left: 0;
 	}
 	.withborder {
-		
+
 	}
 	.cloneDiv{
 		border-top: 2px solid #d0d0d0;
@@ -43,7 +43,7 @@ $allunit = \App\Unit::get();
 			<div class="form-group col-md-4 ">
 				<label for="">أسم الصنف</label>
 				<input name="title" type="text" value="{{$item->title}}" class="form-control" required="required" placeholder="{{ trans('app.Title') }}">
-				
+
 			</div>
 			<div class="form-group col-md-4">
 				<label for="">{{trans('app.Category Name')}}</label>
@@ -98,48 +98,49 @@ $allunit = \App\Unit::get();
 					</div>
 				</div>
 			</div>
-			<?php /*
-			<hr/>
-			<div class="row productCostsPrice {{(count($item->unit))?'hide':''}}">
-				<div class="form-group col-md-3">
-					<label for="">{{ trans('app.Cost Price') }}</label>
-					<input name="cost" value="{{$item->cost}}" min="0" type="number" step="0.01"  class="form-control" required="required" placeholder="{{ trans('app.Cost Price') }}">
-					
-				</div>
-				<div class="form-group col-md-3">
-					<label for="">سعر البيع القطاعى</label>
-					<input name="price" min="0" type="number" step="0.01"  class="form-control" value="{{($item->price)?$item->price:0}}" required="required"   placeholder="سعر البيع القطاعى">
-					
-				</div>
-				<div class="form-group col-md-3">
-					<label for="">سعر البيع الجملة</label>
-					<input name="price2" min="0" type="number" step="0.01"  class="form-control" value="{{$item->price2}}"   placeholder="سعر البيع الجملة">
-					
-				</div>
-				<div class="form-group col-md-3">
-					<label for="">سعر البيع جملة الجملة</label>
-					<input name="price3" min="0" type="number" step="0.01"  class="form-control" value="{{$item->price3}}"  placeholder="سعر البيع جملة الجملة">
-					
-				</div>
-			</div>*/?>
-			<?php 
-				$stores = \App\Store::get();
-			?>
-			<div class="Itemstores">
+<?php /*
+<hr/>
+<div class="row productCostsPrice {{(count($item->unit))?'hide':''}}">
+<div class="form-group col-md-3">
+<label for="">{{ trans('app.Cost Price') }}</label>
+<input name="cost" value="{{$item->cost}}" min="0" type="number" step="0.01"  class="form-control" required="required" placeholder="{{ trans('app.Cost Price') }}">
+
+</div>
+<div class="form-group col-md-3">
+<label for="">سعر البيع القطاعى</label>
+<input name="price" min="0" type="number" step="0.01"  class="form-control" value="{{($item->price)?$item->price:0}}" required="required"   placeholder="سعر البيع القطاعى">
+
+</div>
+<div class="form-group col-md-3">
+<label for="">سعر البيع الجملة</label>
+<input name="price2" min="0" type="number" step="0.01"  class="form-control" value="{{$item->price2}}"   placeholder="سعر البيع الجملة">
+
+</div>
+<div class="form-group col-md-3">
+<label for="">سعر البيع جملة الجملة</label>
+<input name="price3" min="0" type="number" step="0.01"  class="form-control" value="{{$item->price3}}"  placeholder="سعر البيع جملة الجملة">
+
+</div>
+</div>*/?>
+			<?php
+$stores = \App\Store::get();
+?>
+<div class="Itemstores">
 				@foreach($stores as $s)
-				<?php 
-					$store = \App\ProductsStore::where('product_id',$item->id)->where('store_id',$s->id)->first();
-						$qty = 0;
-						if($store)
-						$qty = $store->qty - $store->sale_count;
-					
-				?>
+<?php
+$store = \App\ProductsStore::where('product_id', $item->id)->where('store_id', $s->id)->first();
+$qty   = 0;
+if ($store) {
+	$qty = $store->qty-$store->sale_count;
+}
+
+?>
 				<div class="form-group col-md-6 withborder">
 					<label for="">المخزن</label>
 	  				<input type="hidden" class="form-control" name="store[]"  value="{{$s->id}}" >
 	  				<input type="text" disabled="" class="form-control" value="{{$s->address}}" >
 				</div>
-				
+
 				<div class="form-group col-md-6 withborder">
 					<label for="">{{ trans('app.Qantity') }}</label>
 					<div class="input-group">
@@ -148,7 +149,7 @@ $allunit = \App\Unit::get();
 					  	@include('unit.dropdown',['selId'=>(isset($store->unit_id))?$store->unit_id:'','allunit'=>$allunit])
 					  </span>
 					</div>
-					
+
 				</div>
 				@endforeach
 			</div>
@@ -223,7 +224,7 @@ $(document).ready(function(){
 	getSelectionUnit();
 });
 function getSelectionUnit(){
-	
+
 	var optins = "";
 	$("#unitList select").each(function() {
 		var txt = $(this).find("option:selected").text();
@@ -234,7 +235,11 @@ function getSelectionUnit(){
 		var selected = $(this).attr('selUnit');
 		$(this).html("");
 		$(this).html(optins);
-		$(this).val(selected);
+		if(selected){
+			$(this).val(selected);
+		}else{
+			$(this).prop("selectedIndex", 0);
+		}
 	});
 }
 </script>

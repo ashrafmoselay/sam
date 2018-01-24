@@ -55,7 +55,7 @@ class TreasuryMovementController extends BaseController
             $client = Clients::find($inputs['client_id']);
             if($t==1){
                 $client->total += $inputs['value'];
-                $client->due += $inputs['value'];         
+                $client->due += $inputs['value'];
             }else{
                 $client->due -= $inputs['value'];  
                 $client->paid += $inputs['value'];     

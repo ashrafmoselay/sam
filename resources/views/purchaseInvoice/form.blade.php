@@ -1,14 +1,5 @@
 <style type="text/css">
-	.checknew{
-    	font-size: 12px;
-    	padding: 5px;
-    	position: absolute;
-    	right: -10px;
-    	top: 5px;
-	}
-	.checknew input{
-    	margin-top: 10px;
-	}
+
 	.productList{    
 		border-top: 2px solid #d0d0d0;
     	margin-bottom: 15px;
@@ -28,7 +19,7 @@
 	}
 </style>
 {!! Form::open($formAttr) !!}
-	<div class="form-group col-md-3">
+	<div class="form-group col-md-4">
 		<label for="">{{ trans('app.Supplier Name') }}</label>
 		<button style="margin: -6px 4px;font-size: 12px;padding: 3px 10px 3px 10px" type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#myModal">مورد جديد</span></button>
 		<select data-show-subtext="true" data-live-search="true" name="supplier_id" id="clientsList"  class="form-control selectpicker" required="required">
@@ -49,42 +40,35 @@
 			$rawid = $raw->id + 1;
 		}
 	?>
-	<div class="form-group col-md-3">
+	<div class="form-group col-md-4">
 		<label for="">رقم الفاتورة</label>
 		<input  name="id" value="{{$rawid}}"  type="text" class="form-control"  required="required" placeholder="رقم الفاتورة">
 	</div>
 	<?php 
 		$stores = \App\Store::get();
 	?>
-	<div class="form-group col-md-3">
-		<label for="">إختر المخزن</label>
-
-		<select name="store_id" id="store_id" class="form-control" required="required">
-			
-			@foreach($stores as $s)
-				<option {{($item->store_id==$s->id)?'selected=""':''}}   value="{{$s->id}}">{{$s->address}}</option>
-			@endforeach
-		</select>
-		
-	</div>
-	<div class="form-group col-md-3">
+	<div class="form-group col-md-4">
 		<label for="">التاريخ</label>
 		<input  name="created_at" value="{{($item->id)?$item->created_at:date('Y-m-d')}}"  type="text" class="form-control datepicker"  required="required" placeholder="التاريخ">
 	</div>
 	<div id="orderList">
 	@foreach($item->details as $key=>$prod)
 		<div class="col-md-12 productList">
+		<div class="form-group col-md-2">
+			<label for="">إختر المخزن</label>
+
+			<select name="store_id[]" id="store_id" class="form-control storeName" required="required">
+				
+				@foreach($stores as $s)
+					<option {{($prod->store_id==$s->id)?'selected=""':''}}   value="{{$s->id}}">{{$s->address}}</option>
+				@endforeach
+			</select>
+			
+		</div>
 		  <div class="col-md-3">
 		  	<div class="form-group">
 				<label for="">{{ trans('app.Products') }} </label>
 				<input value="{{$prod->product_id}}-{{$prod->product->title}}" name="product_id[]" class="typeahead form-control" required=""  type="text">
-				
-			</div>
-		  </div>
-		  <div class="col-md-3">
-		  	<div class="form-group">
-				<label for="">{{ trans('app.Cost Price') }}</label>
-				<input value="{{$prod->cost}}"  name="cost[]" class="form-control cost" required=""  min="0" type="number" step="0.01" >
 				
 			</div>
 		  </div>
@@ -100,7 +84,14 @@
 				
 			</div>
 		  </div>
-		  <div class="col-md-3">
+		  <div class="col-md-2">
+		  	<div class="form-group">
+				<label for="">{{ trans('app.Cost Price') }}</label>
+				<input value="{{$prod->cost}}"  name="cost[]" class="form-control cost" required=""  min="0" type="number" step="0.01" >
+				
+			</div>
+		  </div>
+		  <div class="col-md-2">
 		  	<div class="form-group">
 				<label for="">{{ trans('app.Total') }} </label>
 				<input value="{{$prod->total}}"  name="totalcost[]" class="form-control total" required="" min="0" type="number" step="0.01" >
@@ -118,6 +109,17 @@
 	@endforeach
 	@if(!$item->id)
 	<div class="col-md-12 productList">
+	<div class="form-group col-md-2">
+		<label for="">إختر المخزن</label>
+
+		<select name="store_id[]" id="store_id" class="form-control storeName" required="required">
+			
+			@foreach($stores as $s)
+				<option value="{{$s->id}}">{{$s->address}}</option>
+			@endforeach
+		</select>
+		
+	</div>
 	  <div class="col-md-3">
 	  	<div class="form-group">
 			<label for="">{{ trans('app.Products') }}</label>
@@ -125,18 +127,13 @@
 			
 		</div>
 	  </div>
-		<div class="checknew form-group">
-			جديد
-			<input class="form-control isnew" type="checkbox" name="isnew[0]" class="newProd">
+		<div class="col-md-1">
+			<div class="checknew form-group">
+				<label>جديد</label>
+				<input class="form-control isnew" type="checkbox" name="isnew[0]" class="newProd">
+			</div>
 		</div>
-	  <div class="col-md-3">
-	  	<div class="form-group">
-			<label for="">{{ trans('app.Cost Price') }}</label>
-			<input name="cost[]" autocomplete="off" step="0.01" class="form-control cost originalprice" required=""  min="0" type="number" step="0.01" >
-			
-		</div>
-	  </div>
-	  <div class="col-md-3">
+	  <div class="col-md-2">
 	  	<div class="form-group">
 			<label for="">{{ trans('app.Qantity') }}<span class="avilableQty"></span></label>
 			<div class="input-group">
@@ -147,7 +144,14 @@
 			</div>
 		</div>
 	  </div>
-	  <div class="col-md-3">
+	  <div class="col-md-2">
+	  	<div class="form-group">
+			<label for="">{{ trans('app.Cost Price') }}</label>
+			<input name="cost[]" autocomplete="off" step="0.01" class="form-control cost originalprice" required=""  min="0" type="number" step="0.01" >
+			
+		</div>
+	  </div>
+	  <div class="col-md-2">
 	  	<div class="form-group">
 			<label for="">{{ trans('app.Total') }} </label>
 			<input name="totalcost[]" class="form-control total" step="0.01" required="" min="0" type="number" step="0.01" >

@@ -16,7 +16,7 @@
 						<option value="2">{{trans('app.deposite')}}</option>
 					</select>
 				</div>
-				<div class="form-group">
+				<div class="form-group hide">
 					<label for="">{{trans('app.user_type')}}</label>
 					<select id="userType" name="user_type"  class="form-control">
 						<option value="0"></option>

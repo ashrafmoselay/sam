@@ -19,5 +19,7 @@
 		<label for="">{{ trans('app.Due') }}</label>
 		<input name="due" readonly="" type="number" step="0.01" class="form-control due" value="0" required="required" placeholder="{{ trans('app.Due') }}">
 	</div>
+	<div class="col-md-12">
 	<button type="submit"  class="btn btn-primary">{{ trans('app.Submit') }}</button>
+	</div>
 {!! Form::close() !!}

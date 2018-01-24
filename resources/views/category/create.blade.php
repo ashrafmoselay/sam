@@ -17,8 +17,10 @@
 					</select>
     				
 				</div>
-				<button type="submit" class="btn btn-primary">{{ trans('app.Submit') }}</button>
-			{!! Form::close() !!}
+				<div class="col-md-12">
+					<button type="submit" class="btn btn-primary">{{ trans('app.Submit') }}</button>
+				</div>
+				{!! Form::close() !!}
 		</div>
 	</div>
 </div>

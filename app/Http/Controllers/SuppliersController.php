@@ -118,7 +118,8 @@ class SuppliersController extends BaseController
         try{
             DB::beginTransaction();
             $inputs = $request->except('_token');
-            //var_dump($inputs);die;
+            //dd($inputs);die;
+            $inputs["payment_type"] = 1;
             SupplierPayments::create($inputs);
             $request->session()->flash('alert-success', 'Supplier Payement was successful added!');
             $supplier = Suppliers::find($inputs['supplier_id']);
